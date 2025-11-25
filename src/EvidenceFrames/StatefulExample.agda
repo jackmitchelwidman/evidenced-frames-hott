@@ -40,7 +40,7 @@ _≟ℕ_ = discreteℕ
 -- Existential with custom syntax (matching classical presentation)
 ∃ : {A : Set} (B : A → Set) → Set
 ∃ {A} B = Σ A B
-======
+
 syntax ∃ (λ x → B) = ∃[ x ] B
 
 ------------------------------------------------------------------------
