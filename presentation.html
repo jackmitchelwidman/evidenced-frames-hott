@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Evidenced Frames in HoTT</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
+  <style>
+    .reveal { font-size: 32px; }
+    .reveal h1 { font-size: 2.2em; color: #1a5276; }
+    .reveal h2 { font-size: 1.6em; color: #2874a6; }
+    .reveal h3 { font-size: 1.2em; color: #5d6d7e; }
+    .reveal code { background: #eaf2f8; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; color: #1a5276; }
+    .reveal pre { box-shadow: none; }
+    .reveal pre code {
+      padding: 20px;
+      font-size: 0.9em;
+      line-height: 1.5;
+      background: #f8f9fa;
+      border-left: 4px solid #3498db;
+    }
+    .reveal .key-insight {
+      background: linear-gradient(135deg, #e8f4f8 0%, #d4edda 100%);
+      border-left: 5px solid #28a745;
+      padding: 25px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .reveal .research-q {
+      background: #fff9e6;
+      border-left: 5px solid #f39c12;
+      padding: 18px;
+      margin: 15px 0;
+      text-align: left;
+      border-radius: 0 8px 8px 0;
+    }
+    .reveal ul { text-align: left; }
+    .reveal .two-col { display: flex; gap: 40px; }
+    .reveal .two-col > div { flex: 1; }
+    .reveal .small { font-size: 0.75em; color: #7f8c8d; }
+    .reveal .highlight { color: #c0392b; font-weight: bold; }
+    .reveal section { text-align: center; }
+    .reveal .left { text-align: left; }
+    .reveal .part-header {
+      background: linear-gradient(135deg, #1a5276 0%, #2874a6 100%);
+      color: white;
+      padding: 60px;
+      border-radius: 12px;
+    }
+    .reveal .part-header h1, .reveal .part-header h2 { color: white; }
+    .reveal .part-header .small { color: rgba(255,255,255,0.8); }
+    .reveal table { margin: 20px auto; }
+    .reveal td { padding: 12px 20px; border-bottom: 1px solid #eee; }
+    .reveal tr:nth-child(odd) { background: #f8f9fa; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Title -->
+      <section>
+        <h1>Evidenced Frames in HoTT</h1>
+        <h3 style="color: #5d6d7e; font-style: italic;">What will they look like and how will they behave?</h3>
+        <p style="margin-top: 60px;">Jack Widman</p>
+        <p class="small">Discussion with Liron Cohen<br>Ben-Gurion University</p>
+      </section>
+
+      <!-- Agenda -->
+      <section>
+        <h2>Roadmap</h2>
+        <div class="left" style="max-width: 600px; margin: 0 auto;">
+          <p><span style="color: #2874a6; font-weight: bold;">Part II:</span> A First Dip into the Pond of HoTT</p>
+          <p style="color: #7f8c8d; margin-left: 30px;">An observation: Uniformity ↔ Transport</p>
+          <p style="margin-top: 30px;"><span style="color: #2874a6; font-weight: bold;">Part III:</span> Research Directions</p>
+          <p style="color: #7f8c8d; margin-left: 30px;">What's uniquely possible in HoTT</p>
+          <p style="margin-top: 30px;"><span style="color: #2874a6; font-weight: bold;">Part IV:</span> Discussion</p>
+          <p style="color: #7f8c8d; margin-left: 30px;">Where do we go from here?</p>
+        </div>
+      </section>
+
+      <!-- Part II Header -->
+      <section>
+        <div class="part-header">
+          <h1>Part II</h1>
+          <h2>A First Dip into the Pond of HoTT</h2>
+        </div>
+      </section>
+
+      <!-- The Challenge -->
+      <section>
+        <h2>The Challenge: H-Levels</h2>
+        <div class="left">
+          <p>In HoTT, types have <em>homotopy structure</em>:</p>
+          <ul>
+            <li><strong>Contractible</strong> — exactly one element</li>
+            <li><strong>Proposition</strong> — at most one element</li>
+            <li><strong style="color: #28a745;">Set</strong> — paths between elements are unique</li>
+            <li><strong>Groupoid</strong> — paths can differ...</li>
+          </ul>
+          <p style="margin-top: 30px;">Classical realizability implicitly assumes <span class="highlight">sets</span>.</p>
+          <p>In HoTT, we must be <em>explicit</em>.</p>
+        </div>
+      </section>
+
+      <!-- Conservative Approach -->
+      <section>
+        <h2>Conservative Approach</h2>
+        <pre><code class="language-agda">record HoTT-EvidencedFrame : Type where
+  field
+    Φ : Type
+    Φ-isSet : isSet Φ      -- Explicit!
+
+    E : Type
+    E-isSet : isSet E      -- Explicit!
+
+    _⊢[_]_ : Φ → E → Φ → Type</code></pre>
+        <p class="small" style="margin-top: 20px;">Stay close to classical, but gain HoTT tools</p>
+      </section>
+
+      <!-- The Key Insight -->
+      <section>
+        <h2>An Observation</h2>
+        <div class="key-insight">
+          <h3 style="margin-top: 0; color: #1e7e34;">Uniformity ↔ Transport</h3>
+        </div>
+        <div class="two-col left" style="margin-top: 30px;">
+          <div>
+            <p><strong>Classical:</strong></p>
+            <p>"Same evidence works for <em>all</em> states"</p>
+          </div>
+          <div>
+            <p><strong>HoTT:</strong></p>
+            <p>"Evidence <em>transports</em> along paths"</p>
+          </div>
+        </div>
+        <p class="small" style="margin-top: 30px;">This reframing appears to be novel — I'd value your perspective.</p>
+      </section>
+
+      <!-- Transport Explanation -->
+      <section>
+        <h2>What is Transport?</h2>
+        <div class="left">
+          <p>If you have a path <code>p : σ₁ ≡ σ₂</code> and a realizer in σ₁...</p>
+          <p style="margin-top: 15px;">Transport <em>carries</em> the realizer along the path to σ₂:</p>
+          <pre><code class="language-agda">transport (λ σ → ⟦ φ ⟧ σ c) p realizer₁ : ⟦ φ ⟧ σ₂ c</code></pre>
+          <p class="small" style="margin-top: 10px;">The path p is like a "movie" of σ₁ morphing into σ₂.<br>The realizer "rides along" as the state continuously changes.</p>
+          <p style="margin-top: 25px;"><strong>Uniformity = continuous dependence on parameters</strong></p>
+          <p class="small">Classical: "e works for σ₁" and "e works for σ₂" are separate facts.<br>
+          HoTT: If σ₁ ≡ σ₂, these facts are <em>connected</em> — one transports to the other.</p>
+        </div>
+      </section>
+
+      <!-- The Theorem -->
+      <section>
+        <h2>The Formal Statement</h2>
+        <pre><code class="language-agda">-- Given: evidence e, a path between states, a realizer at σ₁
+-- Result: a realizer at σ₂
+
+evidence-respects-paths :
+    φ₁ ⊢[ e ] φ₂        -- e is evidence (unused here!)
+  → (p : σ₁ ≡ σ₂)       -- states are equal via path p
+  → ⟦ φ₁ ⟧ σ₁ c         -- realizer at σ₁
+  → ⟦ φ₁ ⟧ σ₂ c         -- realizer at σ₂
+
+evidence-respects-paths _ p r = transport (λ i → ⟦ φ₁ ⟧ (p i) c) r</code></pre>
+        <p style="margin-top: 15px;"><strong>Uniformity gains geometric meaning:</strong></p>
+        <p class="small">"Same evidence works for all states" becomes<br>
+        "realizers live in a <em>continuous family</em> over the space of states"</p>
+      </section>
+
+      <!-- Part III Header -->
+      <section>
+        <div class="part-header">
+          <h1>Part III</h1>
+          <h2>Research Directions</h2>
+          <p class="small">What's uniquely possible in HoTT</p>
+        </div>
+      </section>
+
+      <!-- Direction 1 -->
+      <section>
+        <h2>1. Path-Based Evidence</h2>
+        <div class="left">
+          <p><strong>Classical:</strong> Evidence <code>e : E</code> is a code</p>
+          <p><strong>HoTT:</strong> Evidence could be a <em>path</em>!</p>
+          <pre style="margin-top: 20px;"><code class="language-agda">-- If p : φ₁ ≡ φ₂, then p IS evidence!
+transport-realizer : (p : φ₁ ≡ φ₂) → ⟦ φ₁ ⟧ σ c → ⟦ φ₂ ⟧ σ c
+
+-- Transitivity = path composition (automatic!)
+compose-evidence : φ₁ ≡ φ₂ → φ₂ ≡ φ₃ → φ₁ ≡ φ₃
+compose-evidence p q = p ∙ q</code></pre>
+        </div>
+        <div class="research-q">
+          <strong>Question:</strong> Can we embed code-based evidence into path-based?
+        </div>
+      </section>
+
+      <!-- Direction 2 -->
+      <section>
+        <h2>2. Univalence + Uniformity</h2>
+        <div class="left">
+          <p><strong>Univalence:</strong> <code>(A ≃ B) ≃ (A ≡ B)</code></p>
+          <p>Equivalent types are <em>equal</em>.</p>
+          <p style="margin-top: 30px;">For evidenced frames:</p>
+          <ul>
+            <li>If propositions are equivalent...</li>
+            <li>Univalence gives a path...</li>
+            <li>That path <em>is</em> evidence!</li>
+          </ul>
+        </div>
+        <div class="research-q">
+          <strong>Question:</strong> Does univalence <em>generate</em> evidence automatically?
+        </div>
+      </section>
+
+      <!-- Direction 3 -->
+      <section>
+        <h2>3. HITs as Propositions</h2>
+        <div class="left">
+          <p>What if Φ has <em>higher structure</em>?</p>
+          <p style="margin-top: 20px;"><strong>Example: The Circle S¹</strong></p>
+          <ul>
+            <li><code>base : S¹</code></li>
+            <li><code>loop : base ≡ base</code> <span style="color: #e74c3c;">(non-trivial!)</span></li>
+          </ul>
+          <p style="margin-top: 20px;">Propositions could "rotate" around the loop...</p>
+        </div>
+        <div class="research-q">
+          <strong>Question:</strong> What does "realize a point on S¹" mean?
+        </div>
+      </section>
+
+      <!-- Direction 4 -->
+      <section>
+        <h2>4. HITs as Effects</h2>
+        <div class="left">
+          <table style="width: 100%; margin-top: 10px; font-size: 0.9em;">
+            <tr>
+              <td style="width: 30%;"><strong>HIT</strong></td>
+              <td style="width: 25%;"><strong>Effect</strong></td>
+              <td><strong>Meaning</strong></td>
+            </tr>
+            <tr>
+              <td>∥A∥ truncation</td>
+              <td>Failure</td>
+              <td><em>Knows something exists, forgot which one</em><br>
+                  <span class="small">Like fail: terminates but no value returned</span></td>
+            </tr>
+            <tr>
+              <td>Quotient A/~</td>
+              <td>Equality oracle</td>
+              <td><em>Can test if a ~ b at runtime</em><br>
+                  <span class="small">Extensional equality as computational effect</span></td>
+            </tr>
+            <tr>
+              <td>Circle S¹</td>
+              <td>Periodicity</td>
+              <td><em>State that cycles back to start</em><br>
+                  <span class="small">Modular arithmetic, cyclic processes</span></td>
+            </tr>
+          </table>
+        </div>
+        <div class="research-q">
+          <strong>Question:</strong> Can HITs model effects that PCAs cannot?
+        </div>
+      </section>
+
+      <!-- Direction 5 -->
+      <section>
+        <h2>5. Categorical Structure</h2>
+        <div class="left">
+          <p>Evidence as a <em>type family</em>:</p>
+          <pre><code class="language-agda">Evidence : Φ → Φ → Type</code></pre>
+          <p style="margin-top: 20px;">This is categorical:</p>
+          <ul>
+            <li>Objects = propositions</li>
+            <li>Morphisms = evidence</li>
+          </ul>
+          <p style="margin-top: 20px;">In HoTT: need <em>coherence</em> (associativity, units...)</p>
+          <p>Leads to <span style="color: #8e44ad; font-weight: bold;">∞-categorical realizability</span></p>
+        </div>
+      </section>
+
+      <!-- Direction 6 -->
+      <section>
+        <h2>6. Synthetic Homotopy Realizability</h2>
+        <div class="left">
+          <p><strong>Grand vision:</strong></p>
+          <p style="margin-top: 20px;">Synthetic homotopy theory defines spheres, suspensions<br>
+             <em>without</em> topological spaces.</p>
+          <p style="margin-top: 20px;">Could we define realizability<br>
+             <em>without</em> specific PCAs?</p>
+          <ul style="margin-top: 20px;">
+            <li>Realizers for homotopy groups?</li>
+            <li>Evidence for path spaces?</li>
+            <li>Computational meaning for πₙ?</li>
+          </ul>
+        </div>
+        <div class="research-q">
+          <strong>Completely novel territory — no existing work!</strong>
+        </div>
+      </section>
+
+      <!-- Summary of Directions -->
+      <section>
+        <h2>Research Directions Summary</h2>
+        <div class="two-col left">
+          <div>
+            <p><span style="color: #3498db;">1.</span> Path-based evidence</p>
+            <p><span style="color: #3498db;">2.</span> Univalence + uniformity</p>
+            <p><span style="color: #3498db;">3.</span> HITs as propositions</p>
+          </div>
+          <div>
+            <p><span style="color: #3498db;">4.</span> HITs as effects</p>
+            <p><span style="color: #3498db;">5.</span> Categorical structure</p>
+            <p><span style="color: #3498db;">6.</span> Synthetic realizability</p>
+          </div>
+        </div>
+        <div class="key-insight" style="margin-top: 40px;">
+          <p style="margin: 0;"><strong>Core thesis:</strong> HoTT gives evidenced frames<br>new geometric and computational meaning</p>
+        </div>
+      </section>
+
+      <!-- Part IV Header -->
+      <section>
+        <div class="part-header">
+          <h1>Part IV</h1>
+          <h2>Discussion</h2>
+        </div>
+      </section>
+
+      <!-- Key Questions -->
+      <section>
+        <h2>Questions for Discussion</h2>
+        <div class="left" style="max-width: 700px; margin: 0 auto;">
+          <p style="margin-bottom: 25px;"><span style="color: #3498db; font-weight: bold;">1.</span> Which direction is most promising?</p>
+          <p style="margin-bottom: 25px;"><span style="color: #3498db; font-weight: bold;">2.</span> Is "Uniformity ↔ Transport" the right framing?</p>
+          <p><span style="color: #3498db; font-weight: bold;">3.</span> Is pushing Evidenced Frames into the world of HoTT a fruitful endeavor?</p>
+        </div>
+      </section>
+
+      <!-- Closing -->
+      <section>
+        <h2>Thank You</h2>
+        <p style="margin-top: 40px;">Code available at:</p>
+        <p><code style="font-size: 0.8em;">github.com/jackmitchelwidman/evidenced-frames-hott</code></p>
+        <p style="margin-top: 60px; color: #5d6d7e;">Looking forward to exploring<br>these directions together.</p>
+      </section>
+
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      transition: 'fade',
+      transitionSpeed: 'fast'
+    });
+  </script>
+</body>
+</html>
